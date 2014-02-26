@@ -19,5 +19,13 @@
   "bugs": {
     "url": "https://github.com/Dte-ba/epm/issues"
   },
-  "homepage": "https://github.com/Dte-ba/epm"
+  "homepage": "https://github.com/Dte-ba/epm",
+  "dependencies": {
+    "commander": "~2.1.0",
+    "npmlog": "0.0.6"
+  },
+  "devDependencies": {
+    "mocha": "~1.17.1",
+    "should": "~3.1.3"
+  }
 }
