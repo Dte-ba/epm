@@ -11,7 +11,7 @@
 
   // handle the commands
   Object.keys(epm.descriptors).forEach(function(cmd) {
-    var d = descriptor[cmd]
+    var d = epm.descriptors[cmd]
 
     // catch the global options
     if (cmd == "*" && d.options !== undefined) {
