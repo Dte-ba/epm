@@ -1,0 +1,23 @@
+{
+  "name": "epm",
+  "version": "0.0.0",
+  "description": "E-learning package manager es una aplicación para administrar paquetes de contenido utilizados en plataformas educativas",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Dte-ba/epm.git"
+  },
+  "keywords": [
+    "package",
+    "manager"
+  ],
+  "author": "",
+  "license": "GPL v3",
+  "bugs": {
+    "url": "https://github.com/Dte-ba/epm/issues"
+  },
+  "homepage": "https://github.com/Dte-ba/epm"
+}
