@@ -6,6 +6,9 @@
   var epm = require("../lib/epm.js")
     , program = require("commander")
   
+  // keep the program
+  epm.program = program
+
   program
    .version(epm.version)
 
