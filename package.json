@@ -24,7 +24,10 @@
     "commander": "~2.1.0",
     "npmlog": "0.0.6",
     "mkdirp": "^0.3.5",
-    "async": "^0.2.10"
+    "async": "^0.2.10",
+    "wrench": "^1.5.8",
+    "xregexp": "^2.0.0",
+    "adm-zip": "^0.4.4"
   },
   "devDependencies": {
     "mocha": "~1.17.1",

@@ -5,6 +5,7 @@
 
   var epm = require("../lib/epm.js")
     , program = require("commander")
+    , log = require('../lib/log');
   
   // keep the program
   epm.program = program
@@ -37,6 +38,7 @@
      .description(d.description)
      .action(function() {
       var args = Array.prototype.slice.call(arguments, 0, arguments.length-1)
+      args.push(callback)
       epm.commands[cmd].apply(epm, args)
     })
 
@@ -46,6 +48,11 @@
 
   if (process.argv.length == 2) {
     program.help();    
+  }
+
+  // cli callback
+  function callback(err) {
+    
   }
 
 }()
