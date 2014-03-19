@@ -51,8 +51,15 @@
   }
 
   // cli callback
-  function callback(err) {
-    
+  function callback(er) {
+    var code = 0
+
+    if (er) {
+      log.error(er.stack || er.message)
+      code = 1
+    }
+    console.log("bye")
+    process.exit(code)
   }
 
 }()
