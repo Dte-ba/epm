@@ -28,7 +28,9 @@
     "wrench": "^1.5.8",
     "xregexp": "^2.0.0",
     "adm-zip": "^0.4.4",
-    "checksum": "^0.1.1"
+    "checksum": "^0.1.1",
+    "graceful-fs": "^2.0.2",
+    "underscore": "^1.6.0"
   },
   "devDependencies": {
     "mocha": "~1.17.1",

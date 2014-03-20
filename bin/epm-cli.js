@@ -58,7 +58,7 @@
       log.error(er.stack || er.message)
       code = 1
     }
-    console.log("bye")
+    console.log("\nbye")
     process.exit(code)
   }
 
