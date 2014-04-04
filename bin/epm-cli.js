@@ -45,13 +45,30 @@
 
   //
   // show
-  program
-    .command("show [type]")
-    .description("gets repository [type] data")
-    .action(function(type, options){
-      var ops = { type: type }
-      __exec("show", ops)
+  var showCmd = program.command("show")
+  showCmd
+    .usage("<command> [<args>]")
+    .description("gets repository data")
+    .action(function(){
+      if (arguments.length === 1) { 
+        return showCmd.help()
+      }
+      showCmd.parse(process.argv.slice(1))
     })
+
+  showCmd
+    .command("all")
+    .description("show all package information")
+    .action(function(){
+       __execSub("show", "all", {})
+     })
+
+  showCmd
+    .command("exec <query>")
+    .description("filter packages")
+    .action(function(query){
+       __execSub("show", "exec", {query: query})
+     })
 
 
   //

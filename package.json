@@ -32,7 +32,8 @@
     "checksum": "^0.1.1",
     "graceful-fs": "^2.0.2",
     "underscore": "^1.6.0",
-    "extend": "^1.2.1"
+    "extend": "^1.2.1",
+    "eql-engine": "0.0.4"
   },
   "devDependencies": {
     "mocha": "~1.17.1",
