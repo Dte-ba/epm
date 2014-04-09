@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-;!function() {
+;(function() {
 
   process.title = "epm"
 
@@ -189,4 +189,4 @@
     process.exit(code)
   }
 
-}()
+})()
