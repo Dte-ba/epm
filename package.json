@@ -21,7 +21,7 @@
     "url": "https://github.com/Dte-ba/epm/issues"
   },
   "bin": {
-  	"epm": "./bin/epm-cli.js"
+  	"epm": "./bin/epm"
   },
   "homepage": "https://github.com/Dte-ba/epm",
   "dependencies": {
