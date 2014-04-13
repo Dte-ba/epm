@@ -21,7 +21,7 @@
     "url": "https://github.com/Dte-ba/epm/issues"
   },
   "bin": {
-  	"epm": "./bin/epm"
+    "epm": "./bin/epm"
   },
   "homepage": "https://github.com/Dte-ba/epm",
   "dependencies": {
@@ -39,7 +39,8 @@
     "eql-engine": "0.0.4",
     "request": "^2.34.0",
     "mime": "^1.2.11",
-    "status-bar": "^2.0.1"
+    "status-bar": "^2.0.1",
+    "file-gateway": "0.0.21"
   },
   "devDependencies": {
     "mocha": "~1.17.1",
