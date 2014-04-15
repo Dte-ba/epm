@@ -1,6 +1,6 @@
 {
   "name": "epm",
-  "version": "0.0.27",
+  "version": "0.0.29",
   "description": "E-learning package manager es una aplicación para administrar paquetes de contenido utilizados en plataformas educativas",
   "main": "index.js",
   "scripts": {
