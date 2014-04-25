@@ -57,6 +57,13 @@
     })
 
   showCmd
+    .command("meta")
+    .description("show package metadata")
+    .action(function(){
+       __execSub("show", "meta", {})
+     })
+
+  showCmd
     .command("all")
     .description("show all package information")
     .action(function(){
