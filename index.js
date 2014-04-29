@@ -1,1 +1,1 @@
-module.exports = require('./lib/epm')
+module.exports = require('./lib/epm.js')
