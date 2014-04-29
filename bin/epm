@@ -120,7 +120,7 @@
   // clone
   program
     .command("clone <url> [path] [name]")
-    .description("clone a remote repository on [path] (./) ar [name] (main)")
+    .description("clone a remote repository on [path] (./) as [name] (main)")
     .action(function(url, path, name, options){
       var ops = { 
         url: url,
