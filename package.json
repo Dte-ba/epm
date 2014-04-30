@@ -40,6 +40,8 @@
     "request": "^2.34.0",
     "mime": "^1.2.11",
     "status-bar": "^2.0.1",
-    "file-gateway": "0.0.33"
-  }
+    "file-gateway": "0.0.33",
+    "watch": "^0.10.0"
+  },
+  "devDependencies": {}
 }
