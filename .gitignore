@@ -18,3 +18,5 @@ node_modules
 /repo
 
 test.js
+
+*.fuse_hidden*
