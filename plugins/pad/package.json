@@ -1,0 +1,14 @@
+{
+  "name": "pad-engine",
+  "description": "PAD package engine",
+  "private": true,
+  "type": "epm-package-engine",
+  "files": [ ".zip", ".rar", ".tar", ".tar.gz" ],
+  "version": "0.1.0",
+  "dependencies": {
+    "adm-zip": "^0.4.4",
+    "mime": "^1.2.11",
+    "mkdirp": "^0.3.5",
+    "underscore": "^1.6.0"
+  }
+}

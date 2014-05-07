@@ -4,7 +4,7 @@
  * please see the LICENSE
  */
 
-var fs = require('graceful-fs')
+var fs = require('fs')
   , path = require('path')
   , AdmZip = require('adm-zip')
   , words = require("./utils/words")
