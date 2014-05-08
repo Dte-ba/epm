@@ -7,7 +7,7 @@
 var fs = require('fs')
   , path = require('path')
   , AdmZip = require('adm-zip')
-  , words = require("./utils/words")
+  , wordsUtils = require("./utils/words")
   , mkdirp = require("mkdirp")
   , mime = require("mime")
   , _ = require("underscore")
@@ -61,38 +61,96 @@ SepEngine.prototype.getTags = function(metadata){
       || metadata.content === undefined 
       || metadata.content.tags === undefined) return []
     
-  return words.splitTags(metadata.content.tags)
+  return wordsUtils.splitTags(metadata.content.tags)
 }
 
 SepEngine.prototype.isMatch = function(metadata, query){
-  var meta = metadata
-    , res = false
-  
-  if (typeof metadata === "function") {
-    meta = metadata()
-  }
+  var self = this;
 
-  query.filters.forEach(function(f){
-    if (f.key === "area") {
-      console.log(meta);
-      res = meta.content.area == f.value
+  var meta = metadata
+    , res
+
+  var where = query.where;
+
+  var pred = where.predicate;
+  var prev = 'and';
+
+
+  while (pred !== undefined){
+    
+    var curr = self.isMatchPredicate(pred, metadata)
+
+    if (res === undefined){
+      res = curr
+    } else if (prev === 'and'){
+      res = res && curr;
+    } else {
+      res = res || curr;
     }
-  })
+
+    if (pred.and !== undefined) {
+      prev = 'and'
+    } else {
+      prev = 'or'
+    }
+
+    pred = pred.and || pred.or;
+  }
 
   return res
 }
 
-SepEngine.prototype.asset = function(repo, info, asset, res, cb){
+SepEngine.prototype.isMatchPredicate = function(predicate, metadata) {
+  var self = this;
+
+  try {
+    var key = predicate.key.toLowerCase();
+
+    if (key.match(/(area|axis|block|title)/gi)){
+
+      return compareScape(
+          predicate,
+          metadata.content[key]
+        );
+      
+    } else if (key === 'tag'){
+      var tags = wordsUtils.splitTags(metadata.content.tags);
+      
+      if (tags.length === 0) return false;
+
+      return _.any(tags.map(function(t){
+        return compareScape(predicate, t);
+      }));
+    }
+
+  } catch(err){
+    console.error(err);
+    return false;
+  }
+}
+
+function compareScape(predicate, text){
+  var ps = wordsUtils.escape(predicate.value);
+  var pv = wordsUtils.escape(text);
+
+  if (pv === undefined || pv === '') return false;
+  //console.log("'%s' '%s' '%s'", ps, predicate.operator, pv);
+  switch(predicate.operator){
+    
+    case '!=': return ps !== pv;
+
+    case 'contains': return pv.indexOf(ps) !== -1;
+
+    case '=':
+      default: return ps === pv;
+  }
+}
+
+SepEngine.prototype.asset = function(repo, info, meta, asset, cb){
   var self = this
 
   var key = info.uid + '-' + info.build
-  var cf = repo.file.resolve('cache-folder', key)
-
-  var meta = info.meta
-
-  if (typeof info.meta === "function"){
-    meta = info.meta()
-  }
+  var cf = repo.fs.resolve('cache-folder', key)
 
   var aFilename = self.resolveAsset(meta, asset)
 
@@ -101,11 +159,10 @@ SepEngine.prototype.asset = function(repo, info, asset, res, cb){
     return self
   }
 
-  var full = repo.file.resolve('cache-folder', key, aFilename)
+  var full = repo.fs.resolve('cache-folder', key, aFilename)
 
   if (fs.existsSync(full)) {
-    writeFile(res, full)
-    cb && cb(null)
+    cb && cb(null, full)
     return self
   }
 
@@ -115,9 +172,7 @@ SepEngine.prototype.asset = function(repo, info, asset, res, cb){
     var zip = new AdmZip(repo.resolve(info.filename))
     zip.extractAllTo(cf, true);
 
-    writeFile(res, full)
-
-    cb && cb(null)
+    cb && cb(null, full)
   })
 
   return self
@@ -138,19 +193,4 @@ SepEngine.prototype.resolveAsset = function(metadata, asset){
   }
 
   return undefined
-}
-
-
-function writeFile(res, filename){
-  var stat = fs.statSync(filename);
-
-  res.writeHead(200, {
-        'Content-Type': mime.lookup(filename),
-        'Content-Length': stat.size,
-        'Content-disposition': 'attachment; filename=' + path.basename(filename)
-  })
-
-  var rs = fs.createReadStream(filename)
-
-  rs.pipe(res)
 }
