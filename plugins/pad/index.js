@@ -70,31 +70,40 @@ SepEngine.prototype.isMatch = function(metadata, query){
   var meta = metadata
     , res
 
-  var where = query.where;
+  var where = _.clone(query.where);
 
-  var pred = where.predicate;
-  var prev = 'and';
+  var prev;
 
+  while (where !== undefined){
+    //console.info(where);
+    var pred = _.clone(where.predicate);
 
-  while (pred !== undefined){
-    
     var curr = self.isMatchPredicate(pred, metadata)
 
     if (res === undefined){
       res = curr
     } else if (prev === 'and'){
       res = res && curr;
+      
+      //if (curr === false) return false;
+
     } else {
       res = res || curr;
     }
 
-    if (pred.and !== undefined) {
+    if (where.and !== undefined) {
       prev = 'and'
     } else {
       prev = 'or'
     }
 
-    pred = pred.and || pred.or;
+    if (where.and !== undefined) {
+      where = _.clone(where.and);
+    } else if (where.or !== undefined) {
+      where = _.clone(where.or);
+    } else {
+      where = undefined;
+    }
   }
 
   return res
@@ -106,7 +115,12 @@ SepEngine.prototype.isMatchPredicate = function(predicate, metadata) {
   try {
     var key = predicate.key.toLowerCase();
 
-    if (key.match(/(area|axis|block|title)/gi)){
+    if (key.match(/(uid|id)/gi)){
+      return compareScape(
+          predicate,
+          metadata.uid
+        );
+    } else if (key.match(/(area|axis|block|title)/gi)){
 
       return compareScape(
           predicate,
