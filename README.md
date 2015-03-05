@@ -5,7 +5,7 @@
 Disponible en [NPM Repository](https://www.npmjs.org/package/epm)
 
 ```
-npm install -g epm
+npm install epm
 ```
 
 # Usage
