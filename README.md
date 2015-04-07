@@ -1,8 +1,12 @@
 # EPM
 
-eLearning package manager es una aplicación para administrar repositorios, de contenido utilizados en plataformas educativas.
+eLearning package manager es una aplicación para administrar repositorios de contenido utilizados en plataformas educativas.
 
 Disponible en [NPM Repository](https://www.npmjs.org/package/epm)
+
+## Epm es utilizado por 
+
+ - PAD (Programa de Alfabetización Digital) [Web Oficial](http://pad.nticx.net/)
 
 ## Licencia
 
