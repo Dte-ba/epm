@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "eLearning package manager es una aplicación para administrar repositorios de contenido utilizados en plataformas educativas",
   "main": "index.js",
-  "scripts": { },
+  "scripts": {
+    "test": "mocha test/run.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/delmosaurio/epm.git"
@@ -19,5 +21,12 @@
   "bugs": {
     "url": "https://github.com/delmosaurio/epm/issues"
   },
-  "homepage": "https://github.com/delmosaurio/epm"
+  "homepage": "https://github.com/delmosaurio/epm",
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "slide": "^1.1.6"
+  },
+  "dependencies": {
+    "mkdirp": "^0.5.0"
+  }
 }
