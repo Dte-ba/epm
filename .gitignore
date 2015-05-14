@@ -29,3 +29,5 @@ node_modules
 # Test
 
 /test/repos
+/test/repo
+/test/packages
