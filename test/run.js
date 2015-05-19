@@ -164,6 +164,29 @@ describe("EPM", function(){
       
     });
 
+    it("should be discover a repository when no changed files without problems", function(done){
+
+      async.each(nexts, function(f, cb){
+          fse.remove(path.join(temp, f), cb);
+        }, function(err){
+          if (err) throw err
+
+          epm.explorer.discover(function(err, res, trackeds){
+            if (err) throw err;
+
+            expect(trackeds).to.be.an('object', 'The results must be an array');
+            assert(Object.keys(trackeds).length === 8, 'The results needs 8 results');
+            assert(res.added.length === 0, 'Extect 0 added');
+            assert(res.deleted.length === 0, 'Extect 0 deleted');
+            assert(res.changed.length === 0, 'Extect 0 changed');
+            assert(res.unchanged.length === 8, 'Extect 8 unchanged');
+            
+            done();
+          });
+        });
+      
+    });
+
   });
 
 });
