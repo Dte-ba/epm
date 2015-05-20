@@ -28,7 +28,7 @@ describe("EPM", function(){
 
  describe("#constructor()", function(){
    it("should be an instance of Epm without errors", function(){
-    epm = new Epm(temp);
+    epm = new Epm(temp, {name: 'test', engine: 'epm-pad-engine'});
     expect(epm).to.be.an('object');
     assert(epm instanceof Epm, 'epm is an Epm object');
    });
@@ -63,25 +63,19 @@ describe("EPM", function(){
    });
 
  });
-
-  describe("#explorer:discover() //empty", function(){
-
-    it("should be discover an empty repository without problems", function(done){
-
-      epm.explorer.discover(function(err,  res, trackeds){
-        if (err) throw err;
-        
-        expect(trackeds).to.be.an('object', 'The results must be an array');
-        expect(Object.keys(trackeds)).to.be.empty;
-
-        done();
+  
+  describe("#explorer:get() //empty", function(){
+    it("should be get a query on a empty repository without problems", function(done){
+      epm
+        .get()
+        .done(function(pkgs){
+          //console.log(Object.keys(pkgs.packages));
+          done();
       });
     });
-
   });
 
-  describe("#explorer:discover() //files", function(){
-
+  describe("#explorer:get() //files", function(){
     var firsts, nexts;
 
     before(function(done){
@@ -101,124 +95,65 @@ describe("EPM", function(){
       });
     });
 
-    it("should be discover a repository without problems", function(done){
 
-      epm.explorer.discover(function(err, res, trackeds){
-        if (err) throw err;
-        
-        expect(trackeds).to.be.an('object', 'The results must be an array');
-        assert(Object.keys(trackeds).length === 8, 'The results needs 8 results');
-        assert(res.added.length === 8, 'Extect 8 added');
-        assert(res.deleted.length === 0, 'Extect 0 deleted');
-        assert(res.changed.length === 0, 'Extect 0 changed');
-        assert(res.unchanged.length === 0, 'Extect 0 unchanged');
-        
-        done();
+    it("should be get a query repository with files without problems", function(done){
+      epm
+        .get()
+        .done(function(pkgs){
+          //console.log(Object.keys(pkgs.packages));
+          done();
       });
-
     });
 
-    it("should be discover a repository when are added files without problems", function(done){
+    it("should be get a query when are added files without problems", function(done){
 
       async.each(nexts, function(f, cb){
           fse.copy(path.join(packagesPath, f), path.join(temp, f), cb);
         }, function(err){
           if (err) throw err
 
-          epm.explorer.discover(function(err, res, trackeds){
-            if (err) throw err;
-
-            expect(trackeds).to.be.an('object', 'The results must be an array');
-            assert(Object.keys(trackeds).length === 10, 'The results needs 10 results');
-            assert(res.added.length === 2, 'Extect 2 added');
-            assert(res.deleted.length === 0, 'Extect 0 deleted');
-            assert(res.changed.length === 0, 'Extect 0 changed');
-            assert(res.unchanged.length === 8, 'Extect 8 unchanged');
-            
-            done();
+          epm
+            .get()
+            .done(function(pkgs){
+              //console.log(Object.keys(pkgs.packages));
+              done();
           });
         });
       
     });
 
-    it("should be discover a repository when are deleted files without problems", function(done){
+    it("should be get a query a repository when are deleted files without problems", function(done){
 
       async.each(nexts, function(f, cb){
           fse.remove(path.join(temp, f), cb);
         }, function(err){
           if (err) throw err
 
-          epm.explorer.discover(function(err, res, trackeds){
-            if (err) throw err;
-
-            expect(trackeds).to.be.an('object', 'The results must be an array');
-            assert(Object.keys(trackeds).length === 8, 'The results needs 8 results');
-            assert(res.added.length === 0, 'Extect 0 added');
-            assert(res.deleted.length === 2, 'Extect 2 deleted');
-            assert(res.changed.length === 0, 'Extect 0 changed');
-            assert(res.unchanged.length === 8, 'Extect 8 unchanged');
-            
-            done();
+          epm
+            .get()
+            .done(function(pkgs){
+              //console.log(Object.keys(pkgs.packages));
+              done();
           });
         });
       
     });
-
-    it("should be discover a repository when no changed files without problems", function(done){
-
-      async.each(nexts, function(f, cb){
-          fse.remove(path.join(temp, f), cb);
-        }, function(err){
-          if (err) throw err
-
-          epm.explorer.discover(function(err, res, trackeds){
-            if (err) throw err;
-
-            expect(trackeds).to.be.an('object', 'The results must be an array');
-            assert(Object.keys(trackeds).length === 8, 'The results needs 8 results');
-            assert(res.added.length === 0, 'Extect 0 added');
-            assert(res.deleted.length === 0, 'Extect 0 deleted');
-            assert(res.changed.length === 0, 'Extect 0 changed');
-            assert(res.unchanged.length === 8, 'Extect 8 unchanged');
-            
-            done();
-          });
-        });
-      
-    });
-
-  });
-  
-  describe("#explorer:get()", function(){
-
-    it("should be get a query without problems", function(done){
-      epm
-        .get()
-        .done(function(some){
-          //console.log(some);
-          done();
-      });
-    });
-  });
-
-  describe("#explorer:get()*2", function(){
 
     it("should be get to queries in parallel without problems", function(done){
-
       async.parallel([
         function(cb){
           epm
             .get()
-            .done(function(some){
-              //console.log(some);
+            .done(function(pkgs){
+              //console.log(Object.keys(pkgs.packages));
               cb();
           });
         },
         function(cb){
           epm
             .get()
-            .done(function(some){
-              //console.log(some);
+            .done(function(pkgs){
+              //console.log(Object.keys(pkgs.packages));
               cb();
           });
         }
@@ -227,6 +162,17 @@ describe("EPM", function(){
       })
       
     });
+
+    it("should be get a query uid:some repository with  without problems", function(done){
+      epm
+        .get('select uid:010e51b3736595b67ddc67b76c0e256e4fd27688')
+        .done(function(pkgs){
+          assert(pkgs.length === 1);
+          done();
+      });
+    });
+    
+
   });
 
 });
