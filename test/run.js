@@ -10,6 +10,7 @@ var async = require('async');
 chai.use(require('chai-fs'));
 
 var temp = path.join(__dirname, './repo/');
+var large = path.join(__dirname, './large/');
 var packagesPath = path.join(__dirname, './packages/');
 
 var assert = chai.assert;
@@ -131,6 +132,9 @@ describe("EPM", function(){
 
           epm
             .get()
+            .progress(function(info){
+              var p = info.currents === 0 ? 0 : info.progress/info.currents;
+            })
             .done(function(pkgs){
               //console.log(Object.keys(pkgs.packages));
               done();
@@ -144,6 +148,9 @@ describe("EPM", function(){
         function(cb){
           epm
             .get()
+            .progress(function(info){
+              var p = info.currents === 0 ? 0 : info.progress/info.currents;
+            })
             .done(function(pkgs){
               //console.log(Object.keys(pkgs.packages));
               cb();
@@ -152,6 +159,9 @@ describe("EPM", function(){
         function(cb){
           epm
             .get()
+            .progress(function(info){
+              var p = info.currents === 0 ? 0 : info.progress/info.currents;
+            })
             .done(function(pkgs){
               //console.log(Object.keys(pkgs.packages));
               cb();
@@ -176,3 +186,53 @@ describe("EPM", function(){
   });
 
 });
+
+describe("EPM #Large repo", function(){
+  
+  before(function(done){
+    fse.remove(path.join(large, '.epm'), function(err){
+      epm = new Epm(large, {name: 'large', engine: 'epm-pad-engine'});
+      
+      epm.once('error', function(err){
+        throw err;
+      });
+
+      epm.once('init', function(info){
+        done();
+      });
+
+      epm.init();
+    });
+  });
+
+  describe("#explorer:get()", function(){
+    this.timeout(5*60*1000);
+    it("should be get a query on a LAAAARGE repository without problems", function(done){
+      epm
+        .get()
+        .progress(function(info){
+          var p = info.currents === 0 ? 0 : info.progress/info.currents;
+          //console.log('#Large %' + p);
+        })
+        .done(function(pkgs){
+          //console.log(pkgs.length);
+          done();
+      });
+    });
+
+    it("should be get a query faster on a cached large repository without problems", function(done){
+      epm
+        .get()
+        .progress(function(info){
+          var p = info.currents === 0 ? 0 : info.progress/info.currents;
+          //console.log('#faster %' + p);
+        })
+        .done(function(pkgs){
+          //console.log(pkgs.length);
+          done();
+      });
+    });
+  });
+
+});
+

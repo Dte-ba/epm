@@ -31,3 +31,4 @@ node_modules
 /test/repos
 /test/repo
 /test/packages
+/test/large
