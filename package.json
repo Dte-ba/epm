@@ -33,6 +33,7 @@
     "file-gateway": "0.0.37",
     "fs-extra": "^0.18.3",
     "graceful-fs": "^3.0.6",
+    "q": "^1.4.1",
     "underscore": "^1.8.3",
     "watch": "^0.16.0"
   }

@@ -188,5 +188,45 @@ describe("EPM", function(){
     });
 
   });
+  
+  describe("#explorer:get()", function(){
+
+    it("should be get a query without problems", function(done){
+      epm
+        .get()
+        .done(function(some){
+          //console.log(some);
+          done();
+      });
+    });
+  });
+
+  describe("#explorer:get()*2", function(){
+
+    it("should be get to queries in parallel without problems", function(done){
+
+      async.parallel([
+        function(cb){
+          epm
+            .get()
+            .done(function(some){
+              //console.log(some);
+              cb();
+          });
+        },
+        function(cb){
+          epm
+            .get()
+            .done(function(some){
+              //console.log(some);
+              cb();
+          });
+        }
+      ], function(err, resuls){
+        done();
+      })
+      
+    });
+  });
 
 });
