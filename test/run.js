@@ -27,6 +27,55 @@ describe("EPM", function(){
     });
   });
 
+ describe("#create()", function(){
+   it("should be crash on create when `path` is empty", function(done){
+    Epm.create({name: 'test', engine: 'epm-pad-engine'}, function(err){
+      if (err !== null && err.message === 'The `path` is not defined o doesn\'t exists') {
+        done();
+      }
+    });
+   });
+
+   it("should be crash on create when `name` is empty", function(done){
+    Epm.create({path: temp, engine: 'epm-pad-engine'}, function(err){
+      if (err !== null && err.message === 'No name defined') {
+        done();
+      }
+    });
+   });
+
+   it("should be crash on create when `engine` is empty", function(done){
+    Epm.create({path: temp, name: 'test'}, function(err){
+      if (err !== null  && err.message === 'No engine defined') {
+        done();
+      }
+    });
+   });
+
+   it("should be create the repository without problems", function(done){
+    
+    Epm.create({path: temp, name: 'test', engine: 'epm-pad-engine'}, function(err){
+      if (err){
+        throw err;
+      }
+
+      var cpath = path.join(temp, ".epm");
+
+      expect(path.join(cpath, 'cache')).to.be.a.directory();
+      expect(path.join(cpath, 'tmp')).to.be.a.directory();
+      //expect(path.join(cpath, 'cache/data')).to.be.a.directory();
+      expect(path.join(cpath, 'remote')).to.be.a.directory();
+      
+      expect(path.join(cpath, 'CONFIG')).to.be.a.file('');
+      expect(path.join(cpath, 'REMOTES')).to.be.a.file('');
+
+      done();
+    });
+
+   });
+
+ });
+
  describe("#constructor()", function(){
    it("should be an instance of Epm without errors", function(){
     epm = new Epm(temp);
@@ -34,38 +83,8 @@ describe("EPM", function(){
     assert(epm instanceof Epm, 'epm is an Epm object');
    });
  });
-
- describe("#init()", function(){
-   it("should be init the repository without problems", function(done){
-    
-    epm.once('error', function(err){
-      throw err;
-    });
-
-    epm.once('init', function(info){
-
-      var cpath = path.join(temp, ".epm");
-
-      expect(path.join(cpath, 'cache')).to.be.a.directory();
-      expect(path.join(cpath, 'tmp')).to.be.a.directory();
-      expect(path.join(cpath, 'cache/data')).to.be.a.directory();
-      expect(path.join(cpath, 'remote')).to.be.a.directory();
-      
-      expect(path.join(cpath, 'CONFIG')).to.be.a.file('');
-      expect(path.join(cpath, 'files/PACKAGES')).to.be.a.file('');
-      expect(path.join(cpath, 'files/FILES')).to.be.a.file('');
-      expect(path.join(cpath, 'cache/TAGS')).to.be.a.file('');
-      expect(path.join(cpath, 'REMOTES')).to.be.a.file('');
-
-      done();
-    });
-
-    epm.init({name: 'test', engine: 'epm-pad-engine'});
-   });
-
- });
   
-  describe("#explorer:get() //empty", function(){
+ describe("#explorer:get() //empty", function(){
     it("should be get a query on a empty repository without problems", function(done){
       epm
         .get()
@@ -187,7 +206,7 @@ describe("EPM", function(){
 
 });
 
-describe("EPM #Large repo", function(){
+/*describe("EPM #Large repo", function(){
   
   before(function(done){
     fse.remove(path.join(large, '.epm'), function(err){
@@ -234,5 +253,5 @@ describe("EPM #Large repo", function(){
     });
   });
 
-});
+});*/
 
