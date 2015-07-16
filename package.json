@@ -24,6 +24,7 @@
   "homepage": "https://github.com/delmosaurio/epm",
   "devDependencies": {
     "chai": "^1.9.1",
+    "chai-fs": "^0.1.0",
     "epm-pad-engine": "0.0.21",
     "slide": "^1.1.6"
   },
@@ -35,6 +36,7 @@
     "file-gateway": "0.0.37",
     "fs-extra": "^0.18.3",
     "graceful-fs": "^3.0.6",
+    "nedb": "^1.1.2",
     "q": "^1.4.1",
     "underscore": "^1.8.3",
     "watch": "^0.16.0"

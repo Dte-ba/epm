@@ -29,7 +29,7 @@ describe("EPM", function(){
 
  describe("#constructor()", function(){
    it("should be an instance of Epm without errors", function(){
-    epm = new Epm(temp, {name: 'test', engine: 'epm-pad-engine'});
+    epm = new Epm(temp);
     expect(epm).to.be.an('object');
     assert(epm instanceof Epm, 'epm is an Epm object');
    });
@@ -60,7 +60,7 @@ describe("EPM", function(){
       done();
     });
 
-    epm.init();
+    epm.init({name: 'test', engine: 'epm-pad-engine'});
    });
 
  });
