@@ -84,18 +84,20 @@ describe("EPM", function(){
    });
  });
   
- describe("#explorer:get() //empty", function(){
-    it("should be get a query on a empty repository without problems", function(done){
+ describe("#load() //empty", function(){
+    it("should be load an empty repository without problems", function(done){
       epm
-        .get()
-        .done(function(pkgs){
-          //console.log(Object.keys(pkgs.packages));
+        .load()
+        .progress(function(info){
+          console.log(info);
+        })
+        .done(function(){
           done();
       });
     });
   });
 
-  describe("#explorer:get() //files", function(){
+  describe("#load() //files", function(){
     var firsts, nexts;
 
     before(function(done){
@@ -116,94 +118,135 @@ describe("EPM", function(){
     });
 
 
-    it("should be get a query repository with files without problems", function(done){
+    it("should be load a repository with files without problems", function(done){
+      epm = new Epm(temp);
       epm
-        .get()
-        .done(function(pkgs){
-          //console.log(Object.keys(pkgs.packages));
+        .load()
+        .progress(function(info){
+          var p = info.currents === 0 ? 0 : info.progress/info.currents;
+          //console.log(p);
+        })
+        .done(function(){
           done();
       });
     });
 
-    it("should be get a query when are added files without problems", function(done){
+    it("should be load when added files into a repository without problems", function(done){
 
       async.each(nexts, function(f, cb){
           fse.copy(path.join(packagesPath, f), path.join(temp, f), cb);
         }, function(err){
           if (err) throw err
 
+          epm = new Epm(temp);
           epm
-            .get()
-            .done(function(pkgs){
-              //console.log(Object.keys(pkgs.packages));
+            .load()
+            .progress(function(info){
+              var p = info.currents === 0 ? 0 : info.progress/info.currents;
+              //console.log(p);
+            })
+            .done(function(){
               done();
           });
         });
       
     });
 
-    it("should be get a query a repository when are deleted files without problems", function(done){
+    it("should be load when are deleted files on the repository without problems", function(done){
 
       async.each(nexts, function(f, cb){
           fse.remove(path.join(temp, f), cb);
         }, function(err){
           if (err) throw err
 
+          epm = new Epm(temp);
           epm
-            .get()
+            .load()
             .progress(function(info){
               var p = info.currents === 0 ? 0 : info.progress/info.currents;
+              //console.log(p);
             })
-            .done(function(pkgs){
-              //console.log(Object.keys(pkgs.packages));
+            .done(function(){
               done();
           });
+
         });
       
     });
 
-    it("should be get to queries in parallel without problems", function(done){
-      async.parallel([
-        function(cb){
+    it("should be find in the repository without problems", function(done){
+
+      async.each(nexts, function(f, cb){
+          fse.remove(path.join(temp, f), cb);
+        }, function(err){
+          if (err) throw err
+
+          epm = new Epm(temp);
           epm
-            .get()
+            .load()
             .progress(function(info){
               var p = info.currents === 0 ? 0 : info.progress/info.currents;
+              //console.log(p);
             })
-            .done(function(pkgs){
-              //console.log(Object.keys(pkgs.packages));
-              cb();
+            .done(function(){
+
+              epm.find({}, function(err, items){
+                console.log(items.length);
+                done();
+              });
           });
-        },
-        function(cb){
-          epm
-            .get()
-            .progress(function(info){
-              var p = info.currents === 0 ? 0 : info.progress/info.currents;
-            })
-            .done(function(pkgs){
-              //console.log(Object.keys(pkgs.packages));
-              cb();
-          });
-        }
-      ], function(err, resuls){
-        done();
-      })
+
+        });
       
     });
 
-    it("should be get a query uid:some repository with  without problems", function(done){
-      epm
-        .get('select uid:010e51b3736595b67ddc67b76c0e256e4fd27688')
-        .done(function(pkgs){
-          assert(pkgs.length === 1);
-          done();
-      });
+    it("should be findOne in the repository without problems", function(done){
+
+      async.each(nexts, function(f, cb){
+          fse.remove(path.join(temp, f), cb);
+        }, function(err){
+          if (err) throw err
+
+          epm = new Epm(temp);
+          epm
+            .load()
+            .progress(function(info){
+              var p = info.currents === 0 ? 0 : info.progress/info.currents;
+              //console.log(p);
+            })
+            .done(function(){
+
+              epm.findOne({ uid: '010e51b3736595b67ddc67b76c0e256e4fd27688' }, function(err, item){
+                console.log(item.uid);
+                done();
+              });
+          });
+
+        });
+      
     });
     
-
   });
 
+});
+
+describe("#load(watch)", function(){
+  this.timeout(1000*60*60); // one hour
+
+  it("should be watch repository without problems", function(done){
+
+    var epm = new Epm(temp);
+    epm
+      .load(true)
+      .progress(function(info){
+        var p = info.currents === 0 ? 0 : info.progress/info.currents;
+        //console.log(p);
+      })
+      .done(function(){
+
+    });
+    
+  });
 });
 
 /*describe("EPM #Large repo", function(){
