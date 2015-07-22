@@ -230,7 +230,7 @@ describe("EPM", function(){
 
 });
 
-describe("#load(watch)", function(){
+/*describe("#load(watch)", function(){
   this.timeout(1000*60*60); // one hour
 
   it("should be watch repository without problems", function(done){
@@ -247,54 +247,53 @@ describe("#load(watch)", function(){
     });
     
   });
-});
+});*/
 
-/*describe("EPM #Large repo", function(){
+describe("EPM #Large repo", function(){
   
   before(function(done){
     fse.remove(path.join(large, '.epm'), function(err){
-      epm = new Epm(large, {name: 'large', engine: 'epm-pad-engine'});
-      
-      epm.once('error', function(err){
-        throw err;
-      });
-
-      epm.once('init', function(info){
+      Epm.create({path: large, name: 'test', engine: 'epm-pad-engine'}, function(err){
+        if (err){
+          throw err;
+        }
         done();
       });
-
-      epm.init();
     });
   });
 
   describe("#explorer:get()", function(){
     this.timeout(5*60*1000);
     it("should be get a query on a LAAAARGE repository without problems", function(done){
+      epm = new Epm(large);
       epm
-        .get()
+        .load()
         .progress(function(info){
           var p = info.currents === 0 ? 0 : info.progress/info.currents;
-          //console.log('#Large %' + p);
+          //console.log(p);
         })
-        .done(function(pkgs){
-          //console.log(pkgs.length);
+        .done(function(){
           done();
       });
     });
 
     it("should be get a query faster on a cached large repository without problems", function(done){
+      epm = new Epm(large);
       epm
-        .get()
+        .load()
         .progress(function(info){
           var p = info.currents === 0 ? 0 : info.progress/info.currents;
-          //console.log('#faster %' + p);
+          //console.log(p);
         })
-        .done(function(pkgs){
-          //console.log(pkgs.length);
-          done();
+        .done(function(){
+          epm
+            .find({}, function(err, items){
+              console.log(items.length + ' finded')
+              done();
+            });
       });
     });
   });
 
-});*/
+});
 
