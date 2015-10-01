@@ -1,6 +1,6 @@
 {
   "name": "epm",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "eLearning package manager es una aplicación para administrar repositorios de contenido utilizados en plataformas educativas",
   "main": "index.js",
   "scripts": {
@@ -25,7 +25,7 @@
   "devDependencies": {
     "chai": "^1.9.1",
     "chai-fs": "^0.1.0",
-    "epm-pad-engine": "0.0.21",
+    "epm-pad-engine": ">=1.0.1",
     "slide": "^1.1.6"
   },
   "dependencies": {
