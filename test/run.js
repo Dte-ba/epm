@@ -21,10 +21,23 @@ var epm;
 describe("EPM", function(){
 
   before(function(done){
-    fse.remove(temp, function(err){
-      fse.mkdirsSync(temp);
-      done();
+    async.waterfall([
+        function(cb){
+          fse.remove(temp, function(err){
+            fse.mkdirsSync(temp);
+            cb();
+          });
+        },
+        function(cb){
+          fse.remove(large, function(err){
+            fse.mkdirsSync(large);
+            cb();
+          });
+        }
+      ], function(){
+        done();
     });
+    
   });
 
  describe("#create()", function(){
@@ -216,7 +229,7 @@ describe("EPM", function(){
             })
             .done(function(){
 
-              epm.findOne({ uid: '010e51b3736595b67ddc67b76c0e256e4fd27688' }, function(err, item){
+              epm.findOne({ uid: '0aab8c3eac0c9d364dba6f0bae3b824773eb6739' }, function(err, item){
                 console.log(item.uid);
                 done();
               });
