@@ -1,5 +1,7 @@
 # EPM
 
+[![Build Status](https://travis-ci.org/Dte-ba/epm.svg?branch=master)](https://travis-ci.org/Dte-ba/epm)
+
 eLearning package manager es una aplicación para administrar repositorios de contenido utilizados en plataformas educativas.
 
 Disponible en [NPM Repository](https://www.npmjs.org/package/epm)
