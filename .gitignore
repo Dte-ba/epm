@@ -32,3 +32,4 @@ node_modules
 /test/repo
 /test/packages
 /test/large
+test-pack.js
